@@ -1,0 +1,6 @@
+DB_HOST=mysql-37610bae-jeromequijano17-df99.l.aivencloud.com
+DB_PORT=23687
+DB_USER=jeromequijano
+DB_PASSWORD=AVNS_Qd6zdoKt3mtXSDLyrRg
+DB_NAME=dama_game
+DB_CONNECTION_LIMIT=10
