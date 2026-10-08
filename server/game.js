@@ -1,0 +1,7 @@
+function initialBoard(){const b=Array(64).fill(null);for(let r=0;r<8;r++)for(let c=0;c<8;c++)if((r+c)%2===1&&r<3)b[r*8+c]={color:'b',king:false};else if((r+c)%2===1&&r>4)b[r*8+c]={color:'r',king:false};return b}
+const inside=(r,c)=>r>=0&&r<8&&c>=0&&c<8; const idx=(r,c)=>r*8+c;
+function movesFor(board,pos,color,capturesOnly=false){const p=board[pos];if(!p||p.color!==color)return[];const r=Math.floor(pos/8),c=pos%8,dirs=p.king?[-1,1]:color==='r'?[-1]:[1],out=[];for(const dr of dirs)for(const dc of[-1,1]){const r1=r+dr,c1=c+dc;if(!inside(r1,c1))continue;const q=idx(r1,c1);if(!board[q]&&!capturesOnly)out.push({from:pos,to:q,captures:[]});if(board[q]&&board[q].color!==color){const r2=r+2*dr,c2=c+2*dc;if(inside(r2,c2)){const q2=idx(r2,c2);if(!board[q2])out.push({from:pos,to:q2,captures:[q]})}}}return out}
+function legalMoves(board,color){const all=[];for(let i=0;i<64;i++)all.push(...movesFor(board,i,color,true));if(all.some(m=>m.captures.length))return all;const normal=[];for(let i=0;i<64;i++)normal.push(...movesFor(board,i,color,false));return normal}
+function applyMove(board,move){const b=board.map(x=>x&&({...x})),p=b[move.from];b[move.from]=null;b[move.to]=p;for(const x of move.captures)b[x]=null;const r=Math.floor(move.to/8);if((p.color==='r'&&r===0)||(p.color==='b'&&r===7))p.king=true;return b}
+function hasPieces(board,color){return board.some(p=>p&&p.color===color)}
+module.exports={initialBoard,legalMoves,applyMove,hasPieces};
